@@ -23,6 +23,7 @@ var BAR_TEXT_Y = 260;
 var BAR_GAP = 100;
 var BAR_WIDTH = 40;
 var BAR_HEIGHT = 150;
+var BAR_INDENT_Y = 20;
 var MAIN_BAR_COLOR = 'rgba(255, 0, 0, 1)';
 
 var renderCloud = function (ctx, x, y, color) {
@@ -42,6 +43,10 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
+var generatingRandomColor = function () {
+  return 'rgba(0, 0, 255,' + Math.random() + ')';
+};
+
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + SHADOW_GAP_X, CLOUD_Y + SHADOW_GAP_Y, SHADOW_COLOR);
   renderCloud(ctx, CLOUD_X, CLOUD_Y, CLOUD_COLOR);
@@ -54,19 +59,17 @@ window.renderStatistics = function (ctx, players, times) {
   ctx.fillText(TEXT_RESULT, TEXT_X, TEXT_Y + TEXT_GAP_X);
 
   var maxTime = getMaxElement(times);
+  var barOffsetX;
+  var barHeight;
 
   for (var i = 0; i < players.length; i++) {
     ctx.fillStyle = TEXT_COLOR;
 
-    var barOffsetX = BAR_X + (BAR_GAP * i);
-    var barHeight = BAR_HEIGHT * Math.round(times[i]) / maxTime;
-
-    var generatingRandomColor = function () {
-      return 'rgba(0, 0, 255,' + Math.random() + ')';
-    };
+    barOffsetX = BAR_X + (BAR_GAP * i);
+    barHeight = BAR_HEIGHT * Math.round(times[i]) / maxTime;
 
     ctx.fillText(players[i], barOffsetX, BAR_TEXT_Y);
-    ctx.fillText(Math.round(times[i]), BAR_X + (BAR_GAP) * i, BAR_Y - barHeight - 20);
+    ctx.fillText(Math.round(times[i]), BAR_X + (BAR_GAP) * i, BAR_Y - barHeight - BAR_INDENT_Y);
 
     ctx.fillStyle = players[i] === TEXT_MAIN_CHARACTER ? MAIN_BAR_COLOR : generatingRandomColor();
 
